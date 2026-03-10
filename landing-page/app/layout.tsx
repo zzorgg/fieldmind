@@ -2,6 +2,7 @@ import { Inter } from "next/font/google"
 import type { Metadata } from "next"
 
 import "./globals.css"
+import AuthBootstrap from "@/components/auth-bootstrap"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
 
@@ -25,6 +26,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen">
         <ThemeProvider>
+          <AuthBootstrap />
           <div
             className="pointer-events-none fixed inset-0 z-0"
             style={{

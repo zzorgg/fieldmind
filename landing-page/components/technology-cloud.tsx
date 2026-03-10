@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
+import { cn } from '@/lib/utils'
 
 const technologyLogos = [
     {
@@ -9,6 +10,7 @@ const technologyLogos = [
         darkSrc: '/technology/powersync/powersync-light.svg',
         width: 144,
         height: 32,
+        highlighted: true,
     },
     {
         name: 'Supabase',
@@ -16,6 +18,7 @@ const technologyLogos = [
         darkSrc: '/technology/supabase/supabase-light.svg',
         width: 148,
         height: 32,
+        highlighted: true,
     },
     {
         name: 'Mastra',
@@ -23,6 +26,7 @@ const technologyLogos = [
         darkSrc: '/technology/mastra/mastra-light.svg',
         width: 132,
         height: 32,
+        highlighted: true,
     },
     {
         name: 'Expo',
@@ -68,7 +72,7 @@ export default function TechnologyCloud() {
                         <InfiniteSlider
                             speedOnHover={20}
                             speed={40}
-                            gap={112}>
+                            gap={24}>
                             {technologyLogos.map((logo) => (
                                 <TechnologyLogo key={logo.name} {...logo} />
                             ))}
@@ -99,6 +103,8 @@ export default function TechnologyCloud() {
     )
 }
 
+const logoTileClassName = 'flex h-16 w-40 shrink-0 items-center justify-center rounded-2xl border border-dashed bg-background/70 px-6 transition duration-200'
+
 type TechnologyLogoProps = {
     name: string
     src?: string
@@ -106,13 +112,24 @@ type TechnologyLogoProps = {
     darkSrc?: string
     width: number
     height: number
+    highlighted?: boolean
 }
 
-function TechnologyLogo({ name, src, lightSrc, darkSrc, width, height }: TechnologyLogoProps) {
+function TechnologyLogo({ name, src, lightSrc, darkSrc, width, height, highlighted = false }: TechnologyLogoProps) {
     return (
-        <div className="flex h-12 items-center justify-center transition duration-200">
+        <div
+            className={cn(
+                logoTileClassName,
+                highlighted && 'border-solid border-primary bg-primary/5'
+            )}>
             {src ? (
-                <Image src={src} alt={name} width={width} height={height} className="h-8 w-auto" />
+                <Image
+                    src={src}
+                    alt={name}
+                    width={width}
+                    height={height}
+                    className="max-h-8 w-auto max-w-full object-contain"
+                />
             ) : (
                 <>
                     <Image
@@ -120,14 +137,14 @@ function TechnologyLogo({ name, src, lightSrc, darkSrc, width, height }: Technol
                         alt={name}
                         width={width}
                         height={height}
-                        className="h-8 w-auto dark:hidden"
+                        className="max-h-8 w-auto max-w-full object-contain dark:hidden"
                     />
                     <Image
                         src={darkSrc!}
                         alt={name}
                         width={width}
                         height={height}
-                        className="hidden h-8 w-auto dark:block"
+                        className="hidden max-h-8 w-auto max-w-full object-contain dark:block"
                     />
                 </>
             )}
