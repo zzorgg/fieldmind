@@ -6,25 +6,11 @@ import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/theme-toggle'
 import React from 'react'
 import { cn } from '@/lib/utils'
-import { useRouter } from 'next/navigation'
-import { useAuthStore } from '@/hooks/use-auth-store'
+
+const CORE_URL = process.env.NEXT_PUBLIC_CORE_URL!
 
 export const HeroHeader = () => {
     const [menuState, setMenuState] = React.useState(false)
-    const [isSigningOut, setIsSigningOut] = React.useState(false)
-    const router = useRouter()
-    const loading = useAuthStore((state) => state.loading)
-    const user = useAuthStore((state) => state.user)
-    const signOut = useAuthStore((state) => state.signOut)
-    const displayName = user?.user_metadata?.user_name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Signed in'
-
-    async function handleSignOut() {
-        setIsSigningOut(true)
-        await signOut()
-        setMenuState(false)
-        router.replace('/login')
-        setIsSigningOut(false)
-    }
 
     const navLinkClassName = 'text-sm text-muted-foreground transition-colors hover:text-foreground'
 
@@ -49,24 +35,11 @@ export const HeroHeader = () => {
 
                         <div className="hidden items-center gap-3 sm:flex">
                             <ThemeToggle />
-                            {!loading && user ? (
-                                <>
-                                    <div className="hidden items-center rounded-full border border-dashed bg-background/80 px-3 py-1 text-xs text-muted-foreground lg:flex">
-                                        <span className="max-w-32 truncate">{displayName}</span>
-                                    </div>
-                                    <Button type="button" variant="outline" size="lg" onClick={handleSignOut} disabled={isSigningOut}>
-                                        <span>{isSigningOut ? 'Signing out...' : 'Sign Out'}</span>
-                                    </Button>
-                                </>
-                            ) : (
-                                <>
-                                    <Button asChild size="lg">
-                                        <Link href="/sign-up">
-                                            <span>Get Started</span>
-                                        </Link>
-                                    </Button>
-                                </>
-                            )}
+                            <Button asChild size="lg">
+                                <Link href={`${CORE_URL}/sign-up`}>
+                                    <span>Get Started</span>
+                                </Link>
+                            </Button>
                         </div>
 
                         <button
@@ -81,35 +54,15 @@ export const HeroHeader = () => {
                             <div className="absolute right-0 top-full z-50 mt-2 w-56 rounded-lg border bg-background p-4 shadow-lg sm:hidden">
                                 <div className="flex flex-col gap-3">
                                     <ThemeToggle />
-                                    {!loading && user ? (
-                                        <>
-                                            <div className="rounded-lg border border-dashed px-3 py-2 text-sm text-muted-foreground">
-                                                <p className="truncate font-medium text-foreground">{displayName}</p>
-                                                <p className="truncate text-xs">{user.email}</p>
-                                            </div>
-                                            <Button asChild size="sm" variant="ghost" className="w-full">
-                                                <Link href="/contact" onClick={() => setMenuState(false)}>Contact</Link>
-                                            </Button>
-                                            <Button asChild size="sm" variant="ghost" className="w-full">
-                                                <Link href="/dashboard" onClick={() => setMenuState(false)}>Dashboard</Link>
-                                            </Button>
-                                            <Button type="button" size="sm" variant="outline" className="w-full" onClick={handleSignOut} disabled={isSigningOut}>
-                                                {isSigningOut ? 'Signing out...' : 'Sign Out'}
-                                            </Button>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Button asChild size="sm" variant="ghost" className="w-full">
-                                                <Link href="/contact" onClick={() => setMenuState(false)}>Contact</Link>
-                                            </Button>
-                                            <Button asChild size="sm" variant="ghost" className="w-full">
-                                                <Link href="/login" onClick={() => setMenuState(false)}>Log In</Link>
-                                            </Button>
-                                            <Button asChild size="sm" className="w-full">
-                                                <Link href="/sign-up" onClick={() => setMenuState(false)}>Get Started</Link>
-                                            </Button>
-                                        </>
-                                    )}
+                                    <Button asChild size="sm" variant="ghost" className="w-full">
+                                        <Link href="/contact" onClick={() => setMenuState(false)}>Contact</Link>
+                                    </Button>
+                                    <Button asChild size="sm" variant="ghost" className="w-full">
+                                        <Link href={`${CORE_URL}/login`} onClick={() => setMenuState(false)}>Log In</Link>
+                                    </Button>
+                                    <Button asChild size="sm" className="w-full">
+                                        <Link href={`${CORE_URL}/sign-up`} onClick={() => setMenuState(false)}>Get Started</Link>
+                                    </Button>
                                 </div>
                             </div>
                         )}
