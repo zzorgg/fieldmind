@@ -1,11 +1,11 @@
 import { SocialConnections, type SocialProvider } from '@/components/social-connections';
 import { Button } from '@/components/ui/button';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,6 +19,7 @@ type SignInFormProps = {
   onForgotPassword?: () => void;
   onSignUpPress?: () => void;
   onSocialPress?: (provider: SocialProvider) => void;
+  isSubmitting?: boolean;
 };
 
 export function SignInForm({
@@ -26,6 +27,7 @@ export function SignInForm({
   onForgotPassword,
   onSignUpPress,
   onSocialPress,
+  isSubmitting = false,
 }: SignInFormProps) {
   const passwordInputRef = React.useRef<TextInput>(null);
   const [email, setEmail] = React.useState('');
@@ -72,6 +74,7 @@ export function SignInForm({
                   variant="link"
                   size="sm"
                   className="ml-auto h-auto min-h-0 px-1 py-1"
+                  disabled={isSubmitting}
                   onPress={onForgotPassword}>
                   <Text className="font-normal leading-5">Forgot your password?</Text>
                 </Button>
@@ -86,8 +89,8 @@ export function SignInForm({
                 onSubmitEditing={handleSubmit}
               />
             </View>
-            <Button className="w-full" onPress={handleSubmit}>
-              <Text>Continue</Text>
+            <Button className="w-full" disabled={isSubmitting} onPress={handleSubmit}>
+              <Text>{isSubmitting ? 'Please wait...' : 'Continue'}</Text>
             </Button>
           </View>
           <View className="flex-row items-center justify-center gap-1">
@@ -96,6 +99,7 @@ export function SignInForm({
               variant="link"
               size="sm"
               className="h-auto min-h-0 px-0 py-1"
+              disabled={isSubmitting}
               onPress={onSignUpPress}>
               <Text className="leading-5">Sign up</Text>
             </Button>
@@ -105,7 +109,7 @@ export function SignInForm({
             <Text className="text-muted-foreground px-4 text-sm">or</Text>
             <Separator className="flex-1" />
           </View>
-          <SocialConnections onPress={onSocialPress} />
+          <SocialConnections onPress={isSubmitting ? undefined : onSocialPress} />
         </CardContent>
       </Card>
     </View>

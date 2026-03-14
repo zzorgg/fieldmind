@@ -1,11 +1,11 @@
 import { SocialConnections, type SocialProvider } from '@/components/social-connections';
 import { Button } from '@/components/ui/button';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,9 +18,15 @@ type SignUpFormProps = {
   onSubmit?: (values: { name: string; email: string; password: string }) => void;
   onSignInPress?: () => void;
   onSocialPress?: (provider: SocialProvider) => void;
+  isSubmitting?: boolean;
 };
 
-export function SignUpForm({ onSubmit, onSignInPress, onSocialPress }: SignUpFormProps) {
+export function SignUpForm({
+  onSubmit,
+  onSignInPress,
+  onSocialPress,
+  isSubmitting = false,
+}: SignUpFormProps) {
   const emailInputRef = React.useRef<TextInput>(null);
   const passwordInputRef = React.useRef<TextInput>(null);
   const [name, setName] = React.useState('');
@@ -93,8 +99,8 @@ export function SignUpForm({ onSubmit, onSignInPress, onSocialPress }: SignUpFor
                 onSubmitEditing={handleSubmit}
               />
             </View>
-            <Button className="w-full" onPress={handleSubmit}>
-              <Text>Continue</Text>
+            <Button className="w-full" disabled={isSubmitting} onPress={handleSubmit}>
+              <Text>{isSubmitting ? 'Please wait...' : 'Continue'}</Text>
             </Button>
           </View>
           <View className="flex-row items-center justify-center gap-1">
@@ -103,6 +109,7 @@ export function SignUpForm({ onSubmit, onSignInPress, onSocialPress }: SignUpFor
               variant="link"
               size="sm"
               className="h-auto min-h-0 px-0 py-1"
+              disabled={isSubmitting}
               onPress={onSignInPress}>
               <Text className="leading-5">Sign in</Text>
             </Button>
@@ -112,7 +119,7 @@ export function SignUpForm({ onSubmit, onSignInPress, onSocialPress }: SignUpFor
             <Text className="text-muted-foreground px-4 text-sm">or</Text>
             <Separator className="flex-1" />
           </View>
-          <SocialConnections onPress={onSocialPress} />
+          <SocialConnections onPress={isSubmitting ? undefined : onSocialPress} />
         </CardContent>
       </Card>
     </View>

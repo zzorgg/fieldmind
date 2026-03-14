@@ -1,15 +1,17 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  WifiSlashIcon,
-  MapPinIcon,
-  PlantIcon,
-  CloudSunIcon,
-  PlusIcon,
-} from 'phosphor-react-native';
 import { LogoMark } from '@/components/logo';
+import { useAuthContext } from '@/hooks/use-auth-context';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { supabase } from '@/lib/supabase';
 import { THEME } from '@/lib/theme';
+import {
+    CloudSunIcon,
+    MapPinIcon,
+    PlantIcon,
+    PlusIcon,
+    SignOutIcon
+} from 'phosphor-react-native';
+import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const QUICK_ACTIONS = [
   { icon: PlantIcon, label: 'Field Log' },
@@ -20,6 +22,14 @@ const QUICK_ACTIONS = [
 export default function HomeScreen() {
   const colorScheme = useColorScheme();
   const palette = THEME[colorScheme ?? 'light'];
+  const { user } = useAuthContext();
+
+  async function handleSignOut() {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      Alert.alert('Sign out failed', error.message);
+    }
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-background">
@@ -36,10 +46,12 @@ export default function HomeScreen() {
               <Text className="text-xs text-muted-foreground">Field intelligence</Text>
             </View>
           </View>
-          <View className="flex-row items-center gap-2 bg-muted rounded-full px-3 py-1.5">
-            <WifiSlashIcon size={14} color={palette.primary} weight="bold" />
-            <Text className="text-xs text-primary font-medium">Offline ready</Text>
-          </View>
+          <TouchableOpacity
+            className="flex-row items-center gap-2 bg-muted rounded-full px-3 py-1.5 active:opacity-80"
+            onPress={handleSignOut}>
+            <SignOutIcon size={14} color={palette.primary} weight="bold" />
+            <Text className="text-xs text-primary font-medium">Sign out</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Welcome card */}
@@ -50,6 +62,9 @@ export default function HomeScreen() {
           <Text className="text-primary-foreground/80 text-sm">
             Your fields are synced. Everything is up to date.
           </Text>
+          {!!user?.email && (
+            <Text className="text-primary-foreground/90 text-xs mt-2">{user.email}</Text>
+          )}
         </View>
 
         {/* Quick actions */}

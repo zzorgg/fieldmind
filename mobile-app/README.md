@@ -1,8 +1,43 @@
-# Welcome to your Expo app 👋
+# Fieldmind Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This Expo app now includes Supabase authentication with:
 
-## Get started
+- Email/password sign in and sign up
+- Google OAuth
+- GitHub OAuth
+
+## Environment Setup
+
+Create a `.env` file from `.env.example` and fill values from your Supabase project:
+
+```bash
+cp .env.example .env
+```
+
+```env
+EXPO_PUBLIC_SUPABASE_URL="https://YOUR_PROJECT_REF.supabase.co"
+EXPO_PUBLIC_SUPABASE_ANON_KEY="YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY"
+```
+
+## Provider Configuration
+
+In Supabase Dashboard, go to Authentication -> Providers:
+
+1. Enable Google
+2. Enable GitHub
+3. Add these redirect URLs:
+   - `mobileapp://auth/callback`
+   - your local Expo URL if testing web (`http://localhost:8081/auth/callback`)
+
+Then configure OAuth apps:
+
+1. Google Cloud Console OAuth app:
+   - Add authorized redirect URI from Supabase Google provider settings.
+   - For web testing, add authorized JavaScript origin for your Expo web URL.
+2. GitHub OAuth app:
+   - Callback URL must match Supabase GitHub provider redirect URL.
+
+## Run the App
 
 1. Install dependencies
 

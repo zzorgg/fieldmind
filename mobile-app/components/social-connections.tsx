@@ -2,15 +2,15 @@ import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { THEME } from '@/lib/theme';
-import Svg, { Path } from 'react-native-svg';
 import { View } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 
 export type SocialProvider = 'google' | 'github';
 
-const SOCIAL_CONNECTIONS: Array<{
+const SOCIAL_CONNECTIONS: {
   provider: SocialProvider;
   label: string;
-}> = [
+}[] = [
   {
     provider: 'google',
     label: 'Google',

@@ -1,19 +1,12 @@
 import { router } from 'expo-router';
-import { WifiSlashIcon, LightningIcon, ArrowsClockwiseIcon } from 'phosphor-react-native';
 import { View } from 'react-native';
 
 import { AuthScreenLayout } from '@/components/auth-screen-layout';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Text } from '@/components/ui/text';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { THEME } from '@/lib/theme';
 
 export default function GetStartedScreen() {
-  const colorScheme = useColorScheme();
-  const palette = THEME[colorScheme ?? 'light'];
-
   return (
     <AuthScreenLayout keyboardAware={false}>
       <View className="flex-1 items-center justify-between py-4">
@@ -21,7 +14,7 @@ export default function GetStartedScreen() {
           <Logo size="lg" />
           <View className="items-center gap-2 mt-2">
             <Text className="max-w-xs text-center text-lg text-muted-foreground">
-               Field reporting that still works when the internet doesn't.
+              Field reporting that still works when the internet doesn&apos;t.
             </Text>
           </View>
         </View>

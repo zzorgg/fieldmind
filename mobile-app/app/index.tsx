@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
-import { router } from 'expo-router';
-import { LogoMark } from '@/components/logo';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { THEME } from '@/lib/theme';
+import { router } from 'expo-router';
+import { useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 
 export default function SplashScreen() {
   const colorScheme = useColorScheme();
